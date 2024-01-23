@@ -1,4 +1,4 @@
-# fs-app-health-checks
+# fs-dependency-injection
 
 [![Swift Version][swift-image]][swift-url]
 [![License][license-image]][license-url]
