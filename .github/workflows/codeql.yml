@@ -11,7 +11,7 @@ on:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "testing"
+  group: "scanning"
   cancel-in-progress: true
 
 jobs:
