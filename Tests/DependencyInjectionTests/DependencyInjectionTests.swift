@@ -1,7 +1,7 @@
 import XCTest
-@testable import FSDependencyInjection
+@testable import DependencyInjection
 
-final class FSDependencyInjectionTests: XCTestCase {
+final class DependencyInjectionTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
