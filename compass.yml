@@ -1,0 +1,20 @@
+name: fs-dependency-injection
+id: 'ari:cloud:compass:9f2f3021-6c0c-4d5b-bf04-558f54eb6d69:component/a1dbf0d8-af76-46a1-b26b-63b12025bc76/7463eaa9-7345-43c2-9c45-e83f3c07c3cc'
+description: Property-wrapper based Dependency Injection Swift Library
+configVersion: 1
+typeId: LIBRARY
+ownerId: 'ari:cloud:identity::team/fcc4f8ef-8527-4eb0-9a5e-6515cb346bcc'
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: 'https://github.com/LLCFreedom-Space/fs-dependency-injection'
+relationships: {}
+labels:
+  - 'language:swift'
+  - 'source:github'
+customFields: null
+
+# Learn more about formatting compass.yml:
+# https://go.atlassian.com/compass-yml-format
