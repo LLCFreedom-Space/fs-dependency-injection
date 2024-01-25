@@ -8,19 +8,32 @@
 import Foundation
 
 @propertyWrapper
-struct Inject<Service> {
-    
-    var service: Service
-    
-    init(_ dependencyType: InstanceType = .transient) {
-        guard let service = Container.resolve(dependencyType: dependencyType, Service.self) else {
-            fatalError("No dependency of type \(String(describing: Service.self)) registered!")
+public final class Inject<Service> {
+    private var cachedValue: Service?
+
+    public var wrappedValue: Service {
+        get {
+            if let cached = cachedValue { return cached }
+            let value = resolve(in: .shared)
+            cachedValue = value
+            return value
         }
-        self.service = service
     }
-    
-    var wrappedValue: Service {
-        get { self.service }
-        mutating set { service = newValue }
+
+    public init() {}
+
+    private func resolve(in container: Container) -> Service {
+        container.resolveAssert()
     }
+
+//    public static subscript<EnclosingSelf>(
+//        _enclosingInstance object: EnclosingSelf,
+//        wrapped wrappedKeyPath: KeyPath<EnclosingSelf, Service>,
+//        storage storageKeyPath: KeyPath<EnclosingSelf, Inject<Service>>
+//    ) -> Service {
+//        get {
+//            let customContainer = (object as? ContainerProtocol)?.container ?? .shared
+//            return object[keyPath: storageKeyPath].resolve(in: customContainer)
+//        }
+//    }
 }

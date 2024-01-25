@@ -9,38 +9,63 @@ import XCTest
 @testable import DependencyInjection
 
 final class ContainerTests: XCTestCase {
+    var container = Container()
     
     override func setUp() {
         super.setUp()
-        let container = Container()
-        Container.shared = container
+        Container.shared = Container()
+        container = .shared
     }
     
-    func testSharedInstanceResolvesToIdenticalInstance() {
-        Container.register(type: DummyClass.self, as: .singleton, DummyClass())
-        XCTAssertEqual(Container.resolve(DummyClass.self), Container.resolve(DummyClass.self))
+    func testRegisterAndResolveTransient() {
+        container.register(.transient, to: MockService.self) { _ in
+            MockService()
+        }
+        
+        let instance1 = container.resolve(MockService.self)
+        let instance2 = container.resolve(MockService.self)
+        
+        XCTAssertTrue(instance1 !== instance2, "Transient instances should be different")
     }
     
-    func testTransientResolvesToDifferentInstance() {
-        Container.register(type: DummyClass.self, as: .singleton, DummyClass())
-        XCTAssertNotEqual(Container.resolve(DummyClass.self), Container.resolve(DummyClass.self))
+    func testRegisterAndResolveSingleton() {
+        container.register(.singleton, to: MockService.self) { _ in
+            MockService()
+        }
+        
+        let instance1 = container.resolve(MockService.self)
+        let instance2 = container.resolve(MockService.self)
+        
+        XCTAssertTrue(instance1 === instance2, "Singleton instances should be the same")
+    }
+    
+    func testResolveThrowingUnregisteredService() {
+        XCTAssertThrowsError(try container.resolveThrowing(MockService.self))
+    }
+    
+    func testResolveUnregisteredService() {
+        XCTAssertNil(container.resolve(MockService.self))
     }
 }
 
-struct DummyClass: Equatable {
-    var id: UUID
+public class MockService: Equatable {
+    var id: UUID = UUID()
+    public var didCallFoo = false
+    public var didCallBar = false
     
-    init(id: UUID) {
-        self.id = id
+    public func foo() {
+        didCallFoo = true
     }
     
-    init() {
-        self.id = UUID()
+    public func bar() {
+        didCallBar = true
     }
     
     
-    static func == (lhs: DummyClass, rhs: DummyClass) -> Bool {
-        return lhs.id == rhs.id
+    public static func == (lhs: MockService, rhs: MockService) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.didCallFoo == rhs.didCallFoo &&
+        lhs.didCallBar == rhs.didCallBar
     }
     
 }
