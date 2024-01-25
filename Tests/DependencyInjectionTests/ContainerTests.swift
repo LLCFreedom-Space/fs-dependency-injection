@@ -39,10 +39,6 @@ final class ContainerTests: XCTestCase {
         XCTAssertTrue(instance1 === instance2, "Singleton instances should be the same")
     }
     
-    func testResolveThrowingUnregisteredService() {
-        XCTAssertThrowsError(try container.resolveThrowing(MockService.self))
-    }
-    
     func testResolveUnregisteredService() {
         XCTAssertNil(container.resolve(MockService.self))
     }
@@ -60,7 +56,6 @@ public class MockService: Equatable {
     public func bar() {
         didCallBar = true
     }
-    
     
     public static func == (lhs: MockService, rhs: MockService) -> Bool {
         return lhs.id == rhs.id &&

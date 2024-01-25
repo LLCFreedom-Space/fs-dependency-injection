@@ -9,8 +9,7 @@ import Foundation
 
 @propertyWrapper
 public final class Inject<Service> {
-    private var cachedValue: Service?
-
+    
     public var wrappedValue: Service {
         get {
             if let cached = cachedValue { return cached }
@@ -19,21 +18,12 @@ public final class Inject<Service> {
             return value
         }
     }
-
+    
+    private var cachedValue: Service?
+    
     public init() {}
-
+    
     private func resolve(in container: Container) -> Service {
-        container.resolveAssert()
+        container.resolveRequired()
     }
-
-//    public static subscript<EnclosingSelf>(
-//        _enclosingInstance object: EnclosingSelf,
-//        wrapped wrappedKeyPath: KeyPath<EnclosingSelf, Service>,
-//        storage storageKeyPath: KeyPath<EnclosingSelf, Inject<Service>>
-//    ) -> Service {
-//        get {
-//            let customContainer = (object as? ContainerProtocol)?.container ?? .shared
-//            return object[keyPath: storageKeyPath].resolve(in: customContainer)
-//        }
-//    }
 }
