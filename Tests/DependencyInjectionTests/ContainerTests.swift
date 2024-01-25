@@ -80,7 +80,7 @@ final class ContainerTests: XCTestCase {
 }
 
 public class MockService: Equatable {
-    var id: UUID = UUID()
+    var id = UUID()
     public var didCallFoo = false
     public var didCallBar = false
     

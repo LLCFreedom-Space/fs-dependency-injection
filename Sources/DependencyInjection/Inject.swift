@@ -29,17 +29,15 @@ import Foundation
 public final class Inject<Service> {
     /// The wrapped property value, representing the injected service.
     public var wrappedValue: Service {
-        get {
-            if let cached = cachedValue {
-                return cached
-            } // Reuse cached value if available
-            let value = resolve(in: .shared) // Resolve from the shared container
-            cachedValue = value // Cache for future access
-            return value
-        }
+        if let service = service {
+            return service
+        } // Reuse cached value if available
+        let value = resolve(in: .shared) // Resolve from the shared container
+        service = value // Cache for future access
+        return value
     }
     /// Cached value of the resolved service.
-    private var cachedValue: Service?
+    private var service: Service?
     /// Initializes an Inject property wrapper.
     public init() {}
     /// Resolves the service from the specified container.
