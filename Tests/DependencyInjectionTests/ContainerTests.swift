@@ -34,15 +34,16 @@ final class ContainerTests: XCTestCase {
         container = .shared
     }
     
-    func testRegisterFactoryAndResolveTransient() {
+    func testRegisterFactoryAndResolveTransient() throws {
         container.register(.transient, to: MockService.self) { _ in
             MockService()
         }
         
-        let instance1 = container.resolve(MockService.self)
-        let instance2 = container.resolve(MockService.self)
+        let instance1 = try XCTUnwrap(container.resolve(MockService.self))
+        let instance2 = try XCTUnwrap(container.resolve(MockService.self))
         
         XCTAssertNotEqual(instance1, instance2)
+        XCTAssertTrue(type(of: instance1) === type(of: instance2))
     }
     
     func testRegisterFactoryAndResolveSingleton() {
@@ -53,7 +54,7 @@ final class ContainerTests: XCTestCase {
         let instance1 = container.resolve(MockService.self)
         let instance2 = container.resolve(MockService.self)
         
-        XCTAssertEqual(instance1, instance2)
+        XCTAssertTrue(instance1 === instance2)
     }
     
     func testRegisterValueAndResolveTransient() {
@@ -79,7 +80,7 @@ final class ContainerTests: XCTestCase {
     }
 }
 
-public class MockService: Equatable {
+internal class MockService: Equatable {
     var id = UUID()
     public var didCallFoo = false
     public var didCallBar = false

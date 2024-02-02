@@ -25,7 +25,7 @@
 import Foundation
 
 /// A key used for storing and retrieving services within the dependency injection container.
-struct ServiceKey: Hashable {
+internal struct ServiceKey: Hashable {
     /// The type of the service associated with the key.
     let type: Any.Type
     
