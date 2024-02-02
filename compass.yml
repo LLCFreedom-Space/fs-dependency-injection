@@ -5,7 +5,8 @@ configVersion: 1
 typeId: LIBRARY
 ownerId: 'ari:cloud:identity::team/fcc4f8ef-8527-4eb0-9a5e-6515cb346bcc'
 fields:
-  tier: 4
+  lifecycle: Active
+  tier: 1
 links:
   - name: null
     type: REPOSITORY
