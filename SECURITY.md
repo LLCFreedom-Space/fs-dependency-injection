@@ -17,8 +17,8 @@ The LLC Freedom Space ask that known and suspected vulnerabilities be privately 
 
 ### When to report a vulnerability
 
-* You think you have discovered a potential security vulnerability in a DXProtocol.
-* You are unsure how a vulnerability affects a DXProtocol.
+* You think you have discovered a potential security vulnerability in a fs-dependency-injection.
+* You are unsure how a vulnerability affects a fs-dependency-injection.
 
 ### What happens next?
 
