@@ -42,6 +42,6 @@ public final class Inject<Service> {
     public init() {}
     /// Resolves the service from the specified container.
     private func resolve(in container: Container) -> Service {
-        container.resolveRequired() // Obtain the service from the container
+        container.resolveRequired(Service.self) // Obtain the service from the container
     }
 }

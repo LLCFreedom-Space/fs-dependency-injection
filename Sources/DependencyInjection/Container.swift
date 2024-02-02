@@ -25,7 +25,7 @@
 import Foundation
 
 /// A dependency injection container that manages the creation and resolution of services.
-public final class Container: DIContainerProtocol {
+public final class Container {
     /// A shared instance of the container, accessible throughout the application.
     public static var shared = Container()
     /// A lock to ensure thread safety during registration and resolution.
@@ -41,7 +41,7 @@ public final class Container: DIContainerProtocol {
     ///   - factory: A closure that creates an instance of the service when needed.
     public func register<T>(
         _ instanceType: InstanceType = .transient,
-        to type: T.Type = T.self,
+        to type: T.Type,
         factory: @escaping (Container) -> T
     ) {
         lock.lock()
@@ -55,7 +55,7 @@ public final class Container: DIContainerProtocol {
     ///   - instanceType: The lifetime of the service instance (defaults to `transient`).
     ///   - type: The type of the service being registered (defaults to inferred type).
     ///   - value: An autoclosure that provides the service instance's value.
-    public func register<T>(_ instanceType: InstanceType = .transient, to type: T.Type = T.self, value: @escaping @autoclosure () -> T) {
+    public func register<T>(_ instanceType: InstanceType = .transient, to type: T.Type, value: @escaping @autoclosure () -> T) {
         lock.lock()
         defer { lock.unlock() }
         let factory: (Container) -> T = { _ in value() }
@@ -66,7 +66,7 @@ public final class Container: DIContainerProtocol {
     ///
     /// - Parameter type: The type of the service to resolve.
     /// - Returns: The resolved service instance, or nil if not registered.
-    public func resolve<T>(_ type: T.Type = T.self) -> T? {
+    public func resolve<T>(_ type: T.Type) -> T? {
         lock.lock()
         defer { lock.unlock() }
         let value: T? = storage[ServiceKey(type: type)]?.value(in: self)
@@ -79,8 +79,8 @@ public final class Container: DIContainerProtocol {
     ///
     /// - Parameter type: The type of the service to resolve.
     /// - Returns: The resolved service instance.
-    public func resolveRequired<T>(_ type: T.Type = T.self) -> T {
-        guard let unwrapped: T = resolve() else {
+    public func resolveRequired<T>(_ type: T.Type) -> T {
+        guard let unwrapped: T = resolve(type) else {
             preconditionFailure("Unable to resolve service of type \(T.self). It is not registered.")
         }
         return unwrapped

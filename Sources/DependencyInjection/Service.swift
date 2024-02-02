@@ -59,14 +59,9 @@ internal final class Service {
     /// - Parameter container: The container used for resolving dependencies (if needed).
     /// - Returns: The resolved service instance as Any.
     private func fetchValue(from container: Container) -> Any {
-        instance ?? create(in: container)
-    }
-    
-    /// Creates a new instance of the service using the factory closure.
-    ///
-    /// - Parameter container: The container used for resolving dependencies (if needed).
-    /// - Returns: The newly created service instance.
-    private func create(in container: Container) -> Any {
+        if let instance = instance {
+            return instance
+        }
         let value = factory(container)
         if type == .singleton { instance = value }
         return value

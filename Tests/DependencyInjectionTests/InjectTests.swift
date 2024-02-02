@@ -40,7 +40,7 @@ final class InjectTests: XCTestCase {
         @Inject var service: MockService
         @Inject var service1: MockService
         
-        XCTAssertEqual(service, service1)
+        XCTAssertTrue(service === service1)
     }
     
     func testInjectTransient() {
@@ -50,5 +50,6 @@ final class InjectTests: XCTestCase {
         @Inject var service1: MockService
         
         XCTAssertNotEqual(service, service1)
+        XCTAssertTrue(type(of: service) === type(of: service1))
     }
 }
