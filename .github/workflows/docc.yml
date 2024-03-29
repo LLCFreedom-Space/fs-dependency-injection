@@ -32,7 +32,7 @@ jobs:
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/DependencyInjection.doccarchive \
             --output-path docs \
-            --hosting-base-path dependencyinjection;
+            --hosting-base-path fs-dependency-injection;
           echo "<script>window.location.href += \"/documentation/dependencyinjection\"</script>" > docs/index.html;
 
       - name: Upload artifact 📜
