@@ -26,14 +26,17 @@ import XCTest
 @testable import DependencyInjection
 
 final class ContainerTests: XCTestCase {
+    /// Container instance used for testing.
     var container = Container()
     
     override func setUp() {
         super.setUp()
+        // Reset the shared container to ensure isolation for each test
         Container.shared = Container()
         container = .shared
     }
     
+    /// Tests registering a service factory for transient instances and resolving them.
     func testRegisterFactoryAndResolveTransient() throws {
         container.register(.transient, to: MockService.self) { _ in
             MockService()
@@ -46,6 +49,7 @@ final class ContainerTests: XCTestCase {
         XCTAssertTrue(type(of: instance1) === type(of: instance2))
     }
     
+    /// Tests registering a service factory for singleton instances and resolving them.
     func testRegisterFactoryAndResolveSingleton() {
         container.register(.singleton, to: MockService.self) { _ in
             MockService()
@@ -57,6 +61,7 @@ final class ContainerTests: XCTestCase {
         XCTAssertTrue(instance1 === instance2)
     }
     
+    /// Tests registering a service with a fixed value for transient instances and resolving them.
     func testRegisterValueAndResolveTransient() {
         container.register(.transient, to: MockService.self, value: MockService())
         
@@ -66,6 +71,7 @@ final class ContainerTests: XCTestCase {
         XCTAssertNotEqual(instance1, instance2)
     }
     
+    /// Tests registering a service with a fixed value for singleton instances and resolving them.
     func testRegisterValueAndResolveSingleton() {
         container.register(.singleton, to: MockService.self, value: MockService())
         
@@ -75,24 +81,32 @@ final class ContainerTests: XCTestCase {
         XCTAssertEqual(instance1, instance2)
     }
     
+    /// Tests resolving an unregistered service.
     func testResolveUnregisteredService() {
         XCTAssertNil(container.resolve(MockService.self))
     }
 }
 
+/// Internal Mock Service implementation
 internal class MockService: Equatable {
+    /// Unique identifier for each instance
     var id = UUID()
+    /// Flag for tracking method calls
     public var didCallFoo = false
+    /// Flag for tracking method calls
     public var didCallBar = false
     
+    /// Mock service method
     public func foo() {
         didCallFoo = true
     }
     
+    /// Mock service method
     public func bar() {
         didCallBar = true
     }
     
+    /// Equality check for MockService instances
     public static func == (lhs: MockService, rhs: MockService) -> Bool {
         return lhs.id == rhs.id &&
         lhs.didCallFoo == rhs.didCallFoo &&

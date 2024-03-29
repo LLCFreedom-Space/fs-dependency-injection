@@ -26,14 +26,17 @@ import XCTest
 @testable import DependencyInjection
 
 final class InjectTests: XCTestCase {
+    /// Container instance used for testing dependency injection.
     var container = Container()
     
     override func setUp() {
         super.setUp()
+        // Reset the shared container to ensure isolation for each test
         Container.shared = Container()
         container = .shared
     }
     
+    /// Tests automatic injection of singleton service dependencies.
     func testInjectSingleton() {
         container.register(.singleton, to: MockService.self, value: MockService())
         
@@ -43,6 +46,7 @@ final class InjectTests: XCTestCase {
         XCTAssertTrue(service === service1)
     }
     
+    /// Tests automatic injection of transient service dependencies.
     func testInjectTransient() {
         container.register(.transient, to: MockService.self, value: MockService())
         
